@@ -176,7 +176,7 @@
         }
 
         function nextQuestion() {
-            if(state.step >= 10) return end(true);
+            if(state.step >= 20) return end(true);
 
             // Алхам 0: Эхний асуулт заавал тусгай 3-ын нэг байна
             if(state.step === 0) {
@@ -257,7 +257,7 @@
         }
 
         function useAsk() {
-            state.timer += 30;
+            state.timer += 60;
             document.getElementById('game-timer').innerText = state.timer;
             document.getElementById('btn-ask').disabled = true; 
             document.getElementById('btn-ask').style.opacity = "0.2";

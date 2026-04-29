@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ХАЙРЫН САЯТАН - Маргад & Намуунаа</title>
+    <title>ААВ БОЛ САЯТАН - Очирпүрэв</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Pacifico&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -26,8 +26,8 @@
 <body class="min-h-screen flex items-center justify-center p-2 md:p-4">
 
     <div id="start-screen" class="max-w-md w-full bg-white/95 backdrop-blur-md p-8 md:p-10 rounded-[2.5rem] shadow-2xl text-center fade-in">
-        <h1 class="fancy-font text-5xl text-blue-600 mb-2">💖 Хайрын Саятан</h1>
-        <p class="text-gray-500 mb-8 font-semibold italic text-sm">Маргад & Намуунаа нарт зориулав</p>
+        <h1 class="fancy-font text-5xl text-blue-600 mb-2"> Аав Бол Саятан</h1>
+        <p class="text-gray-500 mb-8 font-semibold italic text-sm">ААВД ЗОРИУЛАН ХҮНДРҮҮЛЭВ</p>
         
         <div class="space-y-4 text-left">
             <div>
@@ -36,7 +36,7 @@
             </div>
             <button onclick="initGame()" id="start-button" class="w-full bg-blue-600 text-white p-5 rounded-2xl font-bold text-xl hover:bg-blue-700 shadow-xl transition transform active:scale-95 mt-4 uppercase tracking-widest">Тоглоомыг эхлэх</button>
         </div>
-        <p class="mt-6 text-[9px] text-gray-400 font-bold uppercase text-center">Асуулт давхцахгүй байх систем идэвхтэй</p>
+        <p class="mt-6 text-[9px] text-gray-400 font-bold uppercase text-center">бүгдийг нь хариулж чаддаг болчихвол хүүдээ хэлээд асуултаа солиулаарай аав</p>
     </div>
 
     <div id="game-screen" class="hidden max-w-6xl w-full flex flex-col md:flex-row gap-4 md:gap-6 fade-in">
@@ -73,16 +73,16 @@
 
     <div id="result-screen" class="hidden max-w-2xl w-full fade-in">
         <div id="certificate-card" class="p-8 md:p-14 rounded-[3rem] border-8 border-double border-blue-200 shadow-2xl relative text-center">
-            <div class="fancy-font text-4xl text-blue-600 mb-1">Хайрын Саятан</div>
+            <div class="fancy-font text-4xl text-blue-600 mb-1">Аав бол Саятан</div>
             <p class="text-gray-400 uppercase tracking-[0.4em] text-[10px] font-bold mb-8">Ялагчийн Батламж</p>
             <h1 id="result-title" class="text-2xl font-black text-gray-800 mb-4 tracking-tighter uppercase">Баяр хүргэе!</h1>
-            <p class="text-gray-600 mb-8">Хайрт <span id="final-name" class="font-bold text-blue-600 underline">...</span> та дараах эрхүүдийг хожлоо:</p>
+            <p class="text-gray-600 mb-8">ХҮНДЭД <span id="final-name" class="font-bold text-blue-600 underline">...</span> та дараах эрхүүдийг хожлоо:</p>
             <div id="won-prizes-list" class="grid grid-cols-1 md:grid-cols-2 gap-2 text-left bg-blue-50/40 p-6 rounded-3xl border border-blue-100 mb-8 max-h-[300px] overflow-y-auto scrollbar-hide"></div>
             <div class="flex justify-between items-end mt-12">
                 <div class="text-left text-[9px] text-gray-400 font-bold uppercase leading-relaxed">
                     <p id="final-date">Огноо: --</p>
                 </div>
-                <div class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold text-[10px] shadow-lg border-2 border-white uppercase">БАТЛАВ</div>
+                <div class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold text-[10px] shadow-lg border-2 border-white uppercase">ЭЭЖИД ХАРУУЛЖ БАТЛУУЛААД ЭРХЭЭ АВ КК</div>
             </div>
         </div>
         <div class="mt-10 text-center">
@@ -93,35 +93,35 @@
     <script>
         // Тусгай эхлэлийн асуултууд 
         const starterQuestions = [
-            { id: 's1', q: "Маргадын аавын нас?", a: ["60", "62", "61", "63"] },
-            { id: 's2', q: "Ганбаяр мундаг ээжийн нас", a: ["53", "54", "52"] },
-            { id: 's3', q: "За бэлэн үү аав?", a: ["бэлэн2", "бэлэн биш", "Бэлэнэвтэр", "удахгүй бэлэн болноо, тэ ганаа"] }
+            { id: 's1', q: "Маргадын орд нас?", a: ["жинлүүр", "охин", "загас", "матар"] },
+            { id: 's2', q: "Маргад хэдэн онд арван жилээ төгссөн бэ?", a: ["2020", "2021", "2019"] },
+            { id: 's3', q: "За бэлэн үү аав?", a: ["бэлэн2", "бэлэн биш", "Бэлэнэвтэр", "удахгүй бэлэн болноо,тэ ганаа"] }
         ];
 
         let generalQuestions = [];
 
         // 20 шатлалтай шагнал
         const prizeLadder = [
-            { lv: 1, text: "💋 Үнсүүлэх эрх", t: false }, 
-            { lv: 2, text: "🤗 Тэврүүлэх эрх", t: false },
-            { lv: 3, text: "🍫 Амттан авхуулах", t: false }, 
-            { lv: 4, text: "🥤 Дуртай уух юмаа авхуулах", t: false },
-            { lv: 5, text: "💆‍♂️ Массаж хийлгэх эрх", t: true }, 
-            { lv: 6, text: "🚗 Ажлаас тосуулах эрх", t: false },
-            { lv: 7, text: "🍦 Гоё юм авхуулж идэх", t: false }, 
-            { lv: 8, text: "🎥 Кино үзэх эрх", t: false },
-            { lv: 9, text: "🥰 Өдөржин эрхлэх эрх", t: false }, 
-            { lv: 10, text: "🍲 Хоол хийлгэх эрх", t: true },
-            { lv: 11, text: "🚶‍♂️ Хамт салхинд гарах", t: false },
-            { lv: 12, text: "✨ Нүүрээ арчлуулах эрх", t: false },
-            { lv: 13, text: "🎮 Хүссэнээ хийх 1 цаг", t: false },
-            { lv: 14, text: "🎶 Дуртай дуугаа дуулуулах", t: false },
-            { lv: 15, text: "🌹 Болзоонд уриулах эрх", t: true },
-            { lv: 16, text: "📸 Хамт хөөрхөн зураг даруулах", t: false },
-            { lv: 17, text: "🛍️ Дэлгүүр хамт хэсэх", t: false },
-            { lv: 18, text: "📱 1 өдөр утас шалгахгүй", t: false },
-            { lv: 19, text: "💖 Гоё урмын үг сонсох", t: false },
-            { lv: 20, text: "⭐ Нэг том хүслээ хэлэх", t: true }
+            { lv: 1, text: "утас оролдох эрх", t: false }, 
+            { lv: 2, text: "чихэртэй цай найруулуулах эрх", t: false },
+            { lv: 3, text: "ганц удаа кола уух эрх ", t: false }, 
+            { lv: 4, text: "тахиа асаалгуулах эрх", t: false },
+            { lv: 5, text: "тамхим авхуулах эрх", t: true }, 
+            { lv: 6, text: " Ажлаас тосуулах эрх", t: false },
+            { lv: 7, text: "үзэх киногоо сонгох эрх", t: false }, 
+            { lv: 8, text: "зурагтыг 1 өдөр эзэмших эрх", t: false },
+            { lv: 9, text: "амрах эрх", t: false }, 
+            { lv: 10, text: " Хоол хийлгэх эрх", t: true },
+            { lv: 11, text: "гахай тэжээх эрх", t: false },
+            { lv: 12, text: "нохотой болох эрх", t: false },
+            { lv: 13, text: "чингүүнийг хүссэн үедээ бүжиглүүлэх эрх", t: false },
+            { lv: 14, text: "ээжийг үглэлтийг зогсоох эрх", t: false },
+            { lv: 15, text: "ажилдаа хүргүүлэх эрх", t: true },
+            { lv: 16, text: "ээжийг 1 өдөр бүтэн морин жолооч хийлгэх эрх", t: false },
+            { lv: 17, text: "хүссэн үедээ ээжийн зураг даралт эсвэл загварын шоуг зогсоох эрх", t: false },
+            { lv: 18, text: "ээж чингүүн 2т утасны хориг тавих эрх", t: false },
+            { lv: 19, text: "оройн хоолыг шийдэх эрх", t: false },
+            { lv: 20, text: "фермтэй болох эрх", t: true }
         ];
 
         let state = { name: "", step: 0, lives: 1, safePoint: 0, timer: 30, interval: null, pool: [], currentQ: null };
@@ -252,7 +252,7 @@
 
         function resetTimer() {
             clearInterval(state.interval);
-            state.timer = 30;
+            state.timer = 60;
             const el = document.getElementById('game-timer');
             el.innerText = state.timer;
             state.interval = setInterval(() => {

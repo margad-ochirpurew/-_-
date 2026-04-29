@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> САЯТАН - Маргад & Намуунаа</title>
+    <title>ХАЙРЫН САЯТАН - Маргад & Намуунаа</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Pacifico&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -18,6 +18,9 @@
         .option-btn { transition: all 0.2s; border: 2px solid #f3f4f6; text-align: left; padding: 1rem; border-radius: 1rem; font-weight: 600; width: 100%; }
         .option-btn:hover:not(:disabled) { border-color: var(--d-blue); background-color: #eff6ff; }
         #certificate-card { background: white; background-image: radial-gradient(#bfdbfe 1.5px, transparent 1.5px); background-size: 20px 20px; }
+        /* Шагнал их болсон үед scrollbar нуух */
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-2 md:p-4">
@@ -41,7 +44,7 @@
             <div class="flex justify-between items-center mb-4 border-b border-blue-100 pb-2">
                 <h3 class="font-bold text-blue-600 uppercase text-xs">Шагналууд:</h3>
             </div>
-            <div id="prize-ladder" class="flex flex-col gap-1"></div>
+            <div id="prize-ladder" class="flex flex-col gap-1 overflow-y-auto max-h-[450px] scrollbar-hide pr-1"></div>
         </div>
 
         <div class="flex-1 bg-white p-6 md:p-10 rounded-[2.5rem] shadow-2xl order-1 md:order-2 flex flex-col relative min-h-[550px]">
@@ -74,7 +77,7 @@
             <p class="text-gray-400 uppercase tracking-[0.4em] text-[10px] font-bold mb-8">Ялагчийн Батламж</p>
             <h1 id="result-title" class="text-2xl font-black text-gray-800 mb-4 tracking-tighter uppercase">Баяр хүргэе!</h1>
             <p class="text-gray-600 mb-8">Хайрт <span id="final-name" class="font-bold text-blue-600 underline">...</span> та дараах эрхүүдийг хожлоо:</p>
-            <div id="won-prizes-list" class="grid grid-cols-1 md:grid-cols-2 gap-3 text-left bg-blue-50/40 p-8 rounded-3xl border border-blue-100 mb-8"></div>
+            <div id="won-prizes-list" class="grid grid-cols-1 md:grid-cols-2 gap-2 text-left bg-blue-50/40 p-6 rounded-3xl border border-blue-100 mb-8 max-h-[300px] overflow-y-auto scrollbar-hide"></div>
             <div class="flex justify-between items-end mt-12">
                 <div class="text-left text-[9px] text-gray-400 font-bold uppercase leading-relaxed">
                     <p id="final-date">Огноо: --</p>
@@ -88,41 +91,53 @@
     </div>
 
     <script>
-        // Тусгай эхлэлийн асуултууд (Эдгээрийг JSON-д биш код дотор үлдээв - цикл логикийн хувьд)
+        // Тусгай эхлэлийн асуултууд 
         const starterQuestions = [
             { id: 's1', q: "Маргадын аавын нас?", a: ["60", "62", "61", "63"] },
             { id: 's2', q: "Ганбаяр мундаг ээжийн нас", a: ["53", "54", "52"] },
             { id: 's3', q: "За бэлэн үү аав?", a: ["бэлэн2", "бэлэн биш", "Бэлэнэвтэр", "удахгүй бэлэн болноо, тэ ганаа"] }
         ];
 
-        // Ерөнхий асуултууд - JSON-оос уншина
         let generalQuestions = [];
 
+        // 20 шатлалтай шагнал
         const prizeLadder = [
-            { lv: 1, text: "💋 Үнсүүлэх эрх", t: false }, { lv: 2, text: "🤗 Тэврүүлэх эрх", t: false },
-            { lv: 3, text: "💆‍♂️ Массаж хийлгэх эрх", t: true }, { lv: 4, text: "🚗 Ажлаас тосуулах эрх", t: false },
-            { lv: 5, text: "🍦 Гоё юм авхуулж идэх эрх", t: false }, { lv: 6, text: "🥰 Өдөржин эрхлэх эрх", t: true },
-            { lv: 7, text: "🍲 Хоол хийлгэх эрх", t: false }, { lv: 8, text: "✨ Нүүрээ арчлуулах эрх", t: false },
-            { lv: 9, text: "🌹 Болзоонд уриулах эрх", t: true }, { lv: 10, text: "⭐ Нэг хүслээ хэлэх эрх", t: true }
+            { lv: 1, text: "💋 Үнсүүлэх эрх", t: false }, 
+            { lv: 2, text: "🤗 Тэврүүлэх эрх", t: false },
+            { lv: 3, text: "🍫 Амттан авхуулах", t: false }, 
+            { lv: 4, text: "🥤 Дуртай уух юмаа авхуулах", t: false },
+            { lv: 5, text: "💆‍♂️ Массаж хийлгэх эрх", t: true }, 
+            { lv: 6, text: "🚗 Ажлаас тосуулах эрх", t: false },
+            { lv: 7, text: "🍦 Гоё юм авхуулж идэх", t: false }, 
+            { lv: 8, text: "🎥 Кино үзэх эрх", t: false },
+            { lv: 9, text: "🥰 Өдөржин эрхлэх эрх", t: false }, 
+            { lv: 10, text: "🍲 Хоол хийлгэх эрх", t: true },
+            { lv: 11, text: "🚶‍♂️ Хамт салхинд гарах", t: false },
+            { lv: 12, text: "✨ Нүүрээ арчлуулах эрх", t: false },
+            { lv: 13, text: "🎮 Хүссэнээ хийх 1 цаг", t: false },
+            { lv: 14, text: "🎶 Дуртай дуугаа дуулуулах", t: false },
+            { lv: 15, text: "🌹 Болзоонд уриулах эрх", t: true },
+            { lv: 16, text: "📸 Хамт хөөрхөн зураг даруулах", t: false },
+            { lv: 17, text: "🛍️ Дэлгүүр хамт хэсэх", t: false },
+            { lv: 18, text: "📱 1 өдөр утас шалгахгүй", t: false },
+            { lv: 19, text: "💖 Гоё урмын үг сонсох", t: false },
+            { lv: 20, text: "⭐ Нэг том хүслээ хэлэх", t: true }
         ];
 
         let state = { name: "", step: 0, lives: 1, safePoint: 0, timer: 30, interval: null, pool: [], currentQ: null };
 
-        // Эхний асуултыг ээлжлэн сонгох логик
         function getStarterIndex() {
             let idx = parseInt(localStorage.getItem('mn_starter_idx') || "0");
             localStorage.setItem('mn_starter_idx', (idx + 1) % 3);
             return idx;
         }
 
-        // Өмнө нь ирсэн асуултуудыг хянах
         function getGlobalUsed() { return JSON.parse(localStorage.getItem('mn_used_ids_final') || '[]'); }
         function saveGlobalUsed(id) {
             let used = getGlobalUsed();
             if(!used.includes(id)) { used.push(id); localStorage.setItem('mn_used_ids_final', JSON.stringify(used)); }
         }
 
-        // JSON-оос асуулт унших функц
         async function loadQuestionsFromJSON() {
             try {
                 const response = await fetch('generalQuestions.json');
@@ -130,7 +145,6 @@
                 return await response.json();
             } catch (error) {
                 console.error('Алдаа:', error);
-                // JSON уншиж чадахгүй бол fallback болгож зарим асуулт харуулах
                 return [
                     { id: 101, q: "Алдаа: generalQuestions.json файлыг уншиж чадсангүй", a: ["Ойлголоо", "Дахин оролдох", "Засах", "Хаах"] }
                 ];
@@ -145,7 +159,6 @@
             btn.disabled = true;
             btn.innerText = "Уншиж байна...";
 
-            // Асуултаа JSON-оос татаж авна
             generalQuestions = await loadQuestionsFromJSON();
             
             state.name = name; state.step = 0; state.lives = 1; state.safePoint = 0;
@@ -153,7 +166,8 @@
             let usedGlobally = getGlobalUsed();
             state.pool = generalQuestions.filter(q => !usedGlobally.includes(q.id));
             
-            if(state.pool.length < 15) { 
+            // 20 асуулттай тул pool-д хамгийн багадаа 20 асуулт байхыг шалгана
+            if(state.pool.length < 20) { 
                 localStorage.setItem('mn_used_ids_final', JSON.stringify([]));
                 state.pool = [...generalQuestions];
             }
@@ -169,16 +183,19 @@
             cont.innerHTML = '';
             [...prizeLadder].reverse().forEach(p => {
                 const div = document.createElement('div');
-                div.className = `p-2 rounded-xl text-[10px] flex justify-between bg-white border border-blue-50 transition-all ${p.lv === state.step+1 ? 'prize-active' : 'text-gray-400'} ${p.t ? 'threshold' : ''}`;
+                div.className = `p-[6px] px-2 rounded-xl text-[10px] flex justify-between bg-white border border-blue-50 transition-all ${p.lv === state.step+1 ? 'prize-active' : 'text-gray-400'} ${p.t ? 'threshold' : ''}`;
                 div.innerHTML = `<span>${p.lv}. ${p.text}</span> ${p.t ? '🚩' : ''}`;
                 cont.appendChild(div);
+
+                if(p.lv === state.step+1) {
+                    setTimeout(() => div.scrollIntoView({ behavior: "smooth", block: "center" }), 100);
+                }
             });
         }
 
         function nextQuestion() {
             if(state.step >= 20) return end(true);
 
-            // Алхам 0: Эхний асуулт заавал тусгай 3-ын нэг байна
             if(state.step === 0) {
                 const sIdx = getStarterIndex();
                 state.currentQ = starterQuestions[sIdx];
@@ -257,7 +274,7 @@
         }
 
         function useAsk() {
-            state.timer += 60;
+            state.timer += 30;
             document.getElementById('game-timer').innerText = state.timer;
             document.getElementById('btn-ask').disabled = true; 
             document.getElementById('btn-ask').style.opacity = "0.2";
@@ -270,11 +287,11 @@
             document.getElementById('final-name').innerText = state.name;
             document.getElementById('final-date').innerText = "Огноо: " + new Date().toLocaleDateString();
             
-            const count = win ? 10 : state.safePoint;
+            const count = win ? 20 : state.safePoint;
             document.getElementById('result-title').innerText = win ? "САЯТАН БОЛЛОО!" : "ТОГЛООМ ДУУСЛАА";
             const list = document.getElementById('won-prizes-list');
             list.innerHTML = count > 0 ? "" : "<p class='col-span-2 text-center text-gray-400 italic'>Эрх хожиж чадсангүй.</p>";
-            for(let i=0; i<count; i++) list.innerHTML += `<div class='text-[12px] font-bold'>✅ ${prizeLadder[i].text}</div>`;
+            for(let i=0; i<count; i++) list.innerHTML += `<div class='text-[11px] font-bold'>✅ ${prizeLadder[i].text}</div>`;
             if(win) confetti({ particleCount: 200, spread: 80, origin: { y: 0.7 } });
         }
     </script>
